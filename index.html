@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LoveJayHind.com - Dating & Video Call</title>
-  
+  <title>LoveJayHind.com - Live Video Call & Dating</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #0b0f19; color: #ffffff; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #0b0f19; color: #ffffff; padding-bottom: 80px; }
 
-    /* Login Screen */
+    /* 1. Login Gate */
     #loginScreen {
       position: fixed; inset: 0; z-index: 99999; background: #0b0f19;
       display: flex; align-items: center; justify-content: center; padding: 20px;
@@ -17,33 +16,33 @@
     .login-card {
       background: #111827; border: 2px solid #ec4899; border-radius: 24px;
       padding: 30px 20px; width: 100%; max-width: 350px; text-align: center;
-      box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
+      box-shadow: 0 0 30px rgba(236, 72, 153, 0.35);
     }
-    .logo-circle {
+    .logo-badge {
       width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 12px;
       background: linear-gradient(135deg, #ec4899, #8b5cf6);
       display: flex; align-items: center; justify-content: center;
       font-size: 24px; font-weight: bold; color: #fff;
     }
-    .btn-main {
+    .btn-action {
       width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 14px;
-      font-weight: bold; cursor: pointer; margin-top: 14px; display: block;
+      font-weight: bold; cursor: pointer; margin-top: 12px; display: block;
     }
-    .btn-user { background: #ffffff; color: #111827; }
+    .btn-google { background: #ffffff; color: #111827; }
     .btn-host { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #ffffff; box-shadow: 0 4px 15px rgba(236,72,153,0.4); }
 
-    /* Top Bar */
+    /* Header */
     header {
       position: sticky; top: 0; z-index: 100; background: #111827;
       border-bottom: 1px solid #374151; padding: 12px 16px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .coin-box {
+    .coin-badge {
       background: #1f2937; border: 1px solid #eab308; padding: 6px 12px;
       border-radius: 20px; color: #facc15; font-size: 13px; font-weight: bold;
     }
 
-    /* Content Area */
+    /* Grid & Cards */
     .container { max-width: 600px; margin: 0 auto; padding: 16px; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .card {
@@ -53,20 +52,14 @@
     .card img { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; }
     .card h4 { font-size: 14px; margin-top: 8px; }
     .card p { font-size: 11px; color: #9ca3af; margin-bottom: 8px; }
-    .btn-action {
+    .btn-call {
       background: linear-gradient(135deg, #ec4899, #8b5cf6); border: none;
       color: #fff; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer;
     }
 
-    /* Host Panel */
-    .host-box {
-      background: linear-gradient(135deg, #4c1d95, #831843); border-radius: 20px;
-      padding: 20px; border: 1px solid #ec4899; margin-bottom: 16px;
-    }
-
     /* Modals */
-    .modal-overlay {
-      position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.85);
+    .modal {
+      position: fixed; inset: 0; z-index: 10001; background: rgba(0,0,0,0.88);
       display: none; align-items: center; justify-content: center; padding: 16px;
     }
     .modal-box {
@@ -78,7 +71,24 @@
       display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; cursor: pointer;
     }
 
-    /* Floating WhatsApp */
+    /* Video Screen */
+    #videoModal {
+      position: fixed; inset: 0; z-index: 20000; background: #000;
+      display: none; flex-direction: column; justify-content: space-between; padding: 16px;
+    }
+    .video-view {
+      position: relative; width: 100%; max-width: 400px; height: 68vh; margin: auto;
+      border-radius: 24px; overflow: hidden; background: #111;
+    }
+    .host-cam-img { width: 100%; height: 100%; object-fit: cover; }
+    .my-camera-box {
+      position: absolute; top: 12px; right: 12px; width: 95px; height: 130px;
+      border-radius: 12px; border: 2px solid #ec4899; overflow: hidden; background: #1e293b;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .my-camera-box video { width: 100%; height: 100%; object-fit: cover; }
+
+    /* WhatsApp Button */
     .wa-btn {
       position: fixed; bottom: 20px; right: 20px; z-index: 999;
       background: #22c55e; color: #fff; width: 56px; height: 56px; border-radius: 50%;
@@ -88,24 +98,11 @@
   </style>
 
   <script>
-    // डेटा व सेटिंग्स
     var UPI_ID = "paytmqr5ufcdm@ptys";
     var MERCHANT_NAME = "Jay Hind Yadav";
     var WA_NUMBER = "919890093797";
 
-    var profiles = [
-      { id: 1, name: "प्रिया शर्मा", age: 22, city: "मुंबई", rate: 30, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" },
-      { id: 2, name: "रिया वर्मा", age: 21, city: "दिल्ली", rate: 25, img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" },
-      { id: 3, name: "अनन्या सेन", age: 23, city: "कोलकाता", rate: 30, img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" },
-      { id: 4, name: "सिमरन कौर", age: 22, city: "चंडीगढ़", rate: 35, img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80" },
-      { id: 5, name: "पूजा मिश्रा", age: 24, city: "लखनऊ", rate: 20, img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" },
-      { id: 6, name: "नेहा पाटिल", age: 22, city: "पुणे", rate: 25, img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" },
-      { id: 7, name: "काव्या रेड्डी", age: 23, city: "हैदराबाद", rate: 30, img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80" },
-        var UPI_ID = "paytmqr5ufcdm@ptys";
-    var MERCHANT_NAME = "Jay Hind Yadav";
-    var WA_NUMBER = "919890093797";
-
-    var profiles = [
+    var defaultProfiles = [
       { id: 1, name: "प्रिया शर्मा", age: 22, city: "मुंबई", rate: 30, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" },
       { id: 2, name: "रिया वर्मा", age: 21, city: "दिल्ली", rate: 25, img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" },
       { id: 3, name: "अनन्या सेन", age: 23, city: "कोलकाता", rate: 30, img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" },
@@ -121,65 +118,82 @@
     var userCoins = 60;
     var hostMinutes = 0;
     var hostEarnings = 0;
-    var callTimer = null;
+    var callInterval = null;
     var callSeconds = 0;
+    var localStream = null;
 
-    function loginAsCustomer() {
+    // लॉगिन नेविगेशन
+    function doCustomerLogin() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('userApp').style.display = 'block';
-      displayProfiles();
+      renderAllProfiles();
     }
 
-    function loginAsHost() {
+    function doHostLogin() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('hostApp').style.display = 'block';
     }
 
-    function returnToLogin() {
+    function backToLogin() {
       document.getElementById('hostApp').style.display = 'none';
       document.getElementById('userApp').style.display = 'none';
       document.getElementById('loginScreen').style.display = 'flex';
     }
 
-    function displayProfiles() {
-      var container = document.getElementById('profilesGrid');
-      container.innerHTML = "";
-      for (var i = 0; i < profiles.length; i++) {
-        var p = profiles[i];
-        var div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = '<img src="' + p.img + '">' +
+    // प्रोफाइल्स लोड करना
+    function renderAllProfiles() {
+      var grid = document.getElementById('profilesGrid');
+      grid.innerHTML = "";
+      for (var i = 0; i < defaultProfiles.length; i++) {
+        var p = defaultProfiles[i];
+        var item = document.createElement('div');
+        item.className = 'card';
+        item.innerHTML = '<img src="' + p.img + '">' +
           '<h4>' + p.name + ', ' + p.age + '</h4>' +
           '<p>' + p.city + ' • ' + p.rate + '🪙/min</p>' +
-          '<button class="btn-action" onclick="startCustomerCall(' + p.id + ')">📞 कॉल करें</button>';
-        container.appendChild(div);
+          '<button class="btn-call" onclick="startRealVideoCall(' + p.id + ')">📹 वीडियो कॉल</button>';
+        grid.appendChild(item);
       }
     }
 
-    function startCustomerCall(id) {
+    // वीडियो कॉलिंग
+    function startRealVideoCall(id) {
       var p = null;
-      for (var i = 0; i < profiles.length; i++) {
-        if (profiles[i].id === id) { p = profiles[i]; break; }
+      for (var i = 0; i < defaultProfiles.length; i++) {
+        if (defaultProfiles[i].id === id) { p = defaultProfiles[i]; break; }
       }
       if (!p) return;
 
       if (userCoins < p.rate) {
-        showRecharge();
+        openRechargeModal();
         return;
       }
 
-      document.getElementById('callName').innerText = p.name;
-      document.getElementById('callPhoto').src = p.img;
-      document.getElementById('callModal').style.display = 'flex';
+      document.getElementById('liveHostName').innerText = p.name;
+      document.getElementById('liveHostImg').src = p.img;
+      document.getElementById('videoModal').style.display = 'flex';
+
+      // फ्रंट कैमरा चालू करना (अगर यूजर परमिशन दे)
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          .then(function(stream) {
+            localStream = stream;
+            document.getElementById('myLocalVideo').srcObject = stream;
+          })
+          .catch(function(err) {
+            console.log("कैमरा परमिशन के बिना सिम्युलेशन जारी रहेगा");
+          });
+      }
 
       callSeconds = 0;
-      clearInterval(callTimer);
-      callTimer = setInterval(function() {
+      clearInterval(callInterval);
+      callInterval = setInterval(function() {
         callSeconds++;
         var m = Math.floor(callSeconds / 60);
         var s = callSeconds % 60;
-        document.getElementById('callTime').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        document.getElementById('liveTimer').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
 
+        // हर 60 सेकंड में सिक्के कटना और कमाई जुड़ना
         if (callSeconds % 60 === 0) {
           if (userCoins >= p.rate) {
             userCoins -= p.rate;
@@ -187,54 +201,61 @@
             hostMinutes++;
             hostEarnings += 15;
           } else {
-            endTheCall();
-            showRecharge();
+            closeVideoCall();
+            openRechargeModal();
           }
         }
       }, 1000);
     }
 
-    function endTheCall() {
-      clearInterval(callTimer);
-      document.getElementById('callModal').style.display = 'none';
-      var mElem = document.getElementById('hostMinutesText');
-      var eElem = document.getElementById('hostEarningsText');
-      if (mElem) mElem.innerText = hostMinutes + " min";
-      if (eElem) eElem.innerText = "₹" + hostEarnings.toFixed(2);
+    function closeVideoCall() {
+      clearInterval(callInterval);
+      if (localStream) {
+        localStream.getTracks().forEach(function(track) { track.stop(); });
+        localStream = null;
+      }
+      document.getElementById('videoModal').style.display = 'none';
+      var m = document.getElementById('hostMinutesText');
+      var e = document.getElementById('hostEarningsText');
+      if (m) m.innerText = hostMinutes + " min";
+      if (e) e.innerText = "₹" + hostEarnings.toFixed(2);
     }
 
-    function testHostCall() {
-      document.getElementById('callName').innerText = "राहुल (कस्टमर कॉल)";
-      document.getElementById('callPhoto').src = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80";
-      document.getElementById('callModal').style.display = 'flex';
+    // नया यूजर / लड़की प्रोफाइल जोड़े
+    function addNewHostProfile() {
+      var name = document.getElementById('regName').value.trim();
+      var age = document.getElementById('regAge').value.trim();
+      var city = document.getElementById('regCity').value.trim();
+      var rate = document.getElementById('regRate').value.trim() || "30";
+      var photo = document.getElementById('regPhoto').value.trim();
 
-      callSeconds = 0;
-      clearInterval(callTimer);
-      callTimer = setInterval(function() {
-        callSeconds++;
-        var m = Math.floor(callSeconds / 60);
-        var s = callSeconds % 60;
-        document.getElementById('callTime').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-
-        if (callSeconds % 60 === 0) {
-          hostMinutes++;
-          hostEarnings += 15;
-          document.getElementById('hostMinutesText').innerText = hostMinutes + " min";
-          document.getElementById('hostEarningsText').innerText = "₹" + hostEarnings.toFixed(2);
-        }
-      }, 1000);
-    }
-
-    function withdrawMoney() {
-      var upi = document.getElementById('hostUpiInput').value.trim();
-      if (!upi) {
+      if (!name || !city) {
         return;
       }
-      var msg = "नमस्ते Jay Hind सर, मैं LoveJayHind की होस्ट हूँ। मेरी कमाई ₹" + hostEarnings + " (" + hostMinutes + " मिनट) हुई है। कृपया मेरे इस UPI ID पर ट्रांसफर करें: " + upi;
+      if (!photo) {
+        photo = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+      }
+
+      var newHost = {
+        id: defaultProfiles.length + 1,
+        name: name,
+        age: age || "22",
+        city: city,
+        rate: parseInt(rate),
+        img: photo
+      };
+
+      defaultProfiles.unshift(newHost);
+      
+      var msg = "नमस्ते Jay Hind सर, नई लड़की ने प्रोफाइल जोड़ी है:\nनाम: " + name + "\nशहर: " + city + "\nउम्र: " + age + "\nरेट: " + rate;
       window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg), "_blank");
+
+      document.getElementById('regModal').style.display = 'none';
+      renderAllProfiles();
     }
 
-    function showRecharge() {
+    // रिचार्ज मॉडल्स
+    function openRechargeModal() {
       document.getElementById('packSection').style.display = 'block';
       document.getElementById('qrSection').style.display = 'none';
       document.getElementById('rechargeModal').style.display = 'flex';
@@ -244,193 +265,57 @@
       document.getElementById('rechargeModal').style.display = 'none';
     }
 
-    function pickPack(coins, price) {
+    function selectPack(coins, price) {
       document.getElementById('packSection').style.display = 'none';
       document.getElementById('qrSection').style.display = 'block';
-
-      document.getElementById('payAmountText').innerText = price;
-      document.getElementById('payCoinsText').innerText = coins;
+      document.getElementById('payAmt').innerText = price;
+      document.getElementById('payCns').innerText = coins;
 
       var upiString = "upi://pay?pa=" + UPI_ID + "&pn=" + encodeURIComponent(MERCHANT_NAME) + "&am=" + price + "&cu=INR&tn=LoveJayHind%20Coins";
-      var qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(upiString);
+      var qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(upiString);
 
-      document.getElementById('payQrImage').src = qrApiUrl;
-      document.getElementById('payDirectBtn').href = upiString;
+      document.getElementById('qrImg').src = qrUrl;
+      document.getElementById('upiPayBtn').href = upiString;
 
       var waMsg = "नमस्ते Jay Hind सर, मैंने LoveJayHind पर ₹" + price + " का रिचार्ज किया है। मेरे " + coins + " कॉइन्स जोड़ें।";
-      document.getElementById('payWaBtn').href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(waMsg);
+      document.getElementById('waPayBtn').href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(waMsg);
     }
 
-    function returnToPacks() {
+    function backToPacks() {
       document.getElementById('qrSection').style.display = 'none';
       document.getElementById('packSection').style.display = 'block';
     }
 
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('userApp').style.display = 'block';
-      displayProfiles();
-    }
-
-    function loginAsHost() {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('hostApp').style.display = 'block';
-    }
-
-    function returnToLogin() {
-      document.getElementById('hostApp').style.display = 'none';
-      document.getElementById('userApp').style.display = 'none';
-      document.getElementById('loginScreen').style.display = 'flex';
-    }
-
-    // 2. प्रोफाइल्स लोड करना
-    function displayProfiles() {
-      var html = "";
-      for (var i = 0; i < profiles.length; i++) {
-        var p = profiles[i];
-        html += '<div class="card">' +
-          '<img src="' + p.img + '">' +
-          '<h4>' + p.name + ', ' + p.age + '</h4>' +
-          '<p>' + p.city + ' • ' + p.rate + '🪙/min</p>' +
-          '<button class="btn-action" onclick="startCustomerCall(' + p.id + ')">📞 कॉल करें</button>' +
-        '</div>';
-      }
-      document.getElementById('profilesGrid').innerHTML = html;
-    }
-
-    // 3. कॉलिंग सिस्टम
-    function startCustomerCall(id) {
-      var p = profiles.find(function(x){ return x.id === id; });
-      if (userCoins < p.rate) {
-        alert("कॉल करने के लिए आपके पास कॉइन्स कम हैं। कृपया रिचार्ज करें!");
-        showRecharge();
-        return;
-      }
-
-      document.getElementById('callName').innerText = p.name;
-      document.getElementById('callPhoto').src = p.img;
-      document.getElementById('callModal').style.display = 'flex';
-
-      callSeconds = 0;
-      clearInterval(callTimer);
-      callTimer = setInterval(function() {
-        callSeconds++;
-        var m = Math.floor(callSeconds / 60);
-        var s = callSeconds % 60;
-        document.getElementById('callTime').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-
-        if (callSeconds % 60 === 0) {
-          if (userCoins >= p.rate) {
-            userCoins -= p.rate;
-            document.getElementById('userCoinsText').innerText = userCoins;
-            hostMinutes++;
-            hostEarnings += 15;
-          } else {
-            alert("कॉइन्स समाप्त हो गए!");
-            endTheCall();
-            showRecharge();
-          }
-        }
-      }, 1000);
-    }
-
-    function endTheCall() {
-      clearInterval(callTimer);
-      document.getElementById('callModal').style.display = 'none';
-      document.getElementById('hostMinutesText').innerText = hostMinutes + " min";
-      document.getElementById('hostEarningsText').innerText = "₹" + hostEarnings.toFixed(2);
-    }
-
-    // 4. होस्ट टेस्ट कॉल व विथड्रॉल
-    function testHostCall() {
-      document.getElementById('callName').innerText = "राहुल (कस्टमर कॉल)";
-      document.getElementById('callPhoto').src = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80";
-      document.getElementById('callModal').style.display = 'flex';
-
-      callSeconds = 0;
-      clearInterval(callTimer);
-      callTimer = setInterval(function() {
-        callSeconds++;
-        var m = Math.floor(callSeconds / 60);
-        var s = callSeconds % 60;
-        document.getElementById('callTime').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-
-        if (callSeconds % 60 === 0) {
-          hostMinutes++;
-          hostEarnings += 15;
-          document.getElementById('hostMinutesText').innerText = hostMinutes + " min";
-          document.getElementById('hostEarningsText').innerText = "₹" + hostEarnings.toFixed(2);
-        }
-      }, 1000);
-    }
-
-    function withdrawMoney() {
+    function withdrawHostMoney() {
       var upi = document.getElementById('hostUpiInput').value.trim();
-      if (!upi) {
-        alert("कृपया अपनी UPI ID डालें!");
-        return;
-      }
-      var msg = "नमस्ते Jay Hind सर, मैं LoveJayHind की होस्ट हूँ। मेरी कमाई ₹" + hostEarnings + " (" + hostMinutes + " मिनट) हुई है। कृपया मेरे इस UPI ID पर ट्रांसफर करें: " + upi;
+      if (!upi) return;
+      var msg = "नमस्ते Jay Hind सर, मैं होस्ट हूँ। मेरी कमाई ₹" + hostEarnings + " (" + hostMinutes + " मिनट) हुई है। कृपया इस UPI पर भेजें: " + upi;
       window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg), "_blank");
-    }
-
-    // 5. रिचार्ज व Paytm QR
-    function showRecharge() {
-      document.getElementById('packSection').style.display = 'block';
-      document.getElementById('qrSection').style.display = 'none';
-      document.getElementById('rechargeModal').style.display = 'flex';
-    }
-
-    function closeRecharge() {
-      document.getElementById('rechargeModal').style.display = 'none';
-    }
-
-    function pickPack(coins, price) {
-      document.getElementById('packSection').style.display = 'none';
-      document.getElementById('qrSection').style.display = 'block';
-
-      document.getElementById('payAmountText').innerText = price;
-      document.getElementById('payCoinsText').innerText = coins;
-
-      var upiString = "upi://pay?pa=" + UPI_ID + "&pn=" + encodeURIComponent(MERCHANT_NAME) + "&am=" + price + "&cu=INR&tn=LoveJayHind%20Coins";
-      var qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(upiString);
-
-      document.getElementById('payQrImage').src = qrApiUrl;
-      document.getElementById('payDirectBtn').href = upiString;
-
-      var waMsg = "नमस्ते Jay Hind सर, मैंने LoveJayHind पर ₹" + price + " का रिचार्ज किया है। मेरे " + coins + " कॉइन्स जोड़ें। (स्क्रीनशॉट संलग्न है)";
-      document.getElementById('payWaBtn').href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(waMsg);
-    }
-
-    function returnToPacks() {
-      document.getElementById('qrSection').style.display = 'none';
-      document.getElementById('packSection').style.display = 'block';
     }
   </script>
 </head>
 <body>
 
-  <!-- ================= 1. LOGIN SCREEN ================= -->
+  <!-- 1. LOGIN SCREEN -->
   <div id="loginScreen">
     <div class="login-card">
-      <div class="logo-circle">LJ</div>
-      <h2 style="font-size: 22px; margin-bottom: 4px;">LoveJayHind<span style="color:#ec4899; font-size:12px;">.com</span></h2>
-      <p style="font-size: 11px; color: #9ca3af; margin-bottom: 20px;">100% Real Dating & Host Earnings</p>
+      <div class="logo-badge">LJ</div>
+      <h2 style="font-size: 22px;">LoveJayHind<span style="color:#ec4899; font-size:12px;">.com</span></h2>
+      <p style="font-size: 11px; color: #9ca3af; margin-bottom: 20px;">Live Video Dating & Host Earning</p>
 
-      <!-- Google / Customer Login Button -->
-      <button class="btn-main btn-user" onclick="loginAsCustomer()" ontouchstart="loginAsCustomer()">
+      <button class="btn-action btn-google" onclick="doCustomerLogin()">
         Google से लॉगिन करें (कस्टमर)
       </button>
 
-      <!-- Host / Girl Login Button -->
-      <button class="btn-main btn-host" onclick="loginAsHost()" ontouchstart="loginAsHost()">
+      <button class="btn-action btn-host" onclick="doHostLogin()">
         ⭐ लड़की / Host लॉगिन (बात करके कमाएं)
       </button>
 
-      <p style="font-size: 10px; color: #6b7280; margin-top: 20px;">18+ केवल। सुरक्षित और वेरिफाइड नेटवर्क।</p>
+      <p style="font-size: 10px; color: #6b7280; margin-top: 20px;">18+ केवल। सुरक्षित और एक्टिव नेटवर्क।</p>
     </div>
   </div>
 
-  <!-- ================= 2. USER MAIN APP ================= -->
+  <!-- 2. CUSTOMER APP -->
   <div id="userApp" style="display: none;">
     <header>
       <div>
@@ -438,40 +323,40 @@
         <p style="font-size: 10px; color: #9ca3af;">यूजर मोड</p>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
-        <div class="coin-box">🪙 <span id="userCoinsText">60</span></div>
-        <button class="btn-action" onclick="showRecharge()" style="padding: 6px 12px; border-radius: 20px;">+ कॉइन</button>
+        <div class="coin-badge">🪙 <span id="userCoinsText">60</span></div>
+        <button class="btn-call" onclick="openRechargeModal()" style="padding: 6px 12px; border-radius: 20px;">+ कॉइन</button>
       </div>
     </header>
 
     <div class="container">
-      <div style="background: linear-gradient(135deg, #3730a3, #831843); padding: 14px; border-radius: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+      <div style="background: linear-gradient(135deg, #3730a3, #831843); padding: 14px; border-radius: 16px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">
         <div>
           <span style="background: #ec4899; font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 10px;">VIP LIVE</span>
-          <h3 style="font-size: 14px; margin-top: 4px;">लाइव वीडियो व ऑडियो चैट</h3>
+          <h3 style="font-size: 14px; margin-top: 4px;">लाइव वीडियो कॉल चालू</h3>
           <p style="font-size: 11px; color: #e5e7eb;">लड़कियों से सीधी बात करें</p>
         </div>
-        <button class="btn-action" onclick="showRecharge()" style="padding: 6px 14px;">प्लान्स</button>
+        <button class="btn-call" onclick="document.getElementById('regModal').style.display='flex'">+ लड़की जुड़ें</button>
       </div>
 
       <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 12px; color: #9ca3af;">
         <span>🟢 ऑनलाइन लड़कियां</span>
-        <span style="color: #ec4899;">10 एक्टिव</span>
+        <button onclick="openRechargeModal()" style="background:none; border:none; color:#ec4899; font-weight:bold; cursor:pointer;">रिचार्ज पैक देखें</button>
       </div>
 
       <div class="grid" id="profilesGrid"></div>
     </div>
   </div>
 
-  <!-- ================= 3. HOST DASHBOARD ================= -->
+  <!-- 3. HOST EARNING PANEL -->
   <div id="hostApp" style="display: none;" class="container">
-    <div class="host-box">
+    <div style="background: linear-gradient(135deg, #4c1d95, #831843); border-radius: 20px; padding: 20px; border: 1px solid #ec4899; margin-bottom: 16px;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
-          <span style="background: #22c55e; font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 10px;">HOST ACTIVE</span>
+          <span style="background: #22c55e; font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 10px;">HOST ONLINE</span>
           <h2 style="font-size: 16px; margin-top: 6px;">प्रिया शर्मा (Verified Host)</h2>
           <p style="font-size: 11px; color: #e5e7eb;">दर: ₹15 / मिनट (आपकी सीधी कमाई)</p>
         </div>
-        <button onclick="returnToLogin()" style="background: #111827; border: 1px solid #374151; color: #9ca3af; font-size: 11px; padding: 6px 10px; border-radius: 8px; cursor: pointer;">लॉगआउट</button>
+        <button onclick="backToLogin()" style="background: #111827; border: 1px solid #374151; color: #9ca3af; font-size: 11px; padding: 6px 10px; border-radius: 8px; cursor: pointer;">लॉगआउट</button>
       </div>
 
       <div style="display: flex; gap: 10px; margin-top: 14px;">
@@ -486,24 +371,17 @@
       </div>
     </div>
 
-    <div style="background: #111827; padding: 18px; border-radius: 18px; border: 1px solid #1f2937; margin-bottom: 16px;">
-      <h3 style="font-size: 14px; margin-bottom: 6px;">पैसे बैंक / UPI में निकालें</h3>
-      <p style="font-size: 11px; color: #9ca3af; margin-bottom: 12px;">जितनी देर बात करेंगी, उतना पैसा तुरंत निकाल सकती हैं।</p>
+    <div style="background: #111827; padding: 18px; border-radius: 18px; border: 1px solid #1f2937;">
+      <h3 style="font-size: 14px; margin-bottom: 6px;">कमाई सीधे बैंक / UPI में निकालें</h3>
       <input id="hostUpiInput" type="text" placeholder="अपनी UPI ID डालें (उदा: 98900...@paytm)" style="width: 100%; background: #1f2937; border: 1px solid #374151; padding: 10px; border-radius: 10px; color: #fff; font-size: 12px; margin-bottom: 10px;">
-      <button onclick="withdrawMoney()" style="width: 100%; background: #22c55e; border: none; color: #fff; padding: 10px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer;">
+      <button onclick="withdrawHostMoney()" style="width: 100%; background: #22c55e; border: none; color: #fff; padding: 10px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer;">
         विथड्रॉल रिक्वेस्ट भेजें
-      </button>
-    </div>
-
-    <div style="text-align: center; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 14px;">
-      <button onclick="testHostCall()" class="btn-action" style="width: 100%; padding: 12px;">
-        📞 टेस्ट कस्टमर कॉल उठाएं
       </button>
     </div>
   </div>
 
-  <!-- ================= 4. RECHARGE MODAL ================= -->
-  <div id="rechargeModal" class="modal-overlay">
+  <!-- 4. RECHARGE MODAL -->
+  <div id="rechargeModal" class="modal">
     <div class="modal-box">
       <button onclick="closeRecharge()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #fff; font-size: 18px; cursor: pointer;">✕</button>
       
@@ -511,8 +389,7 @@
         <h3 style="font-size: 16px; margin-bottom: 4px;">प्रीमियम कॉइन रिचार्ज</h3>
         <p style="font-size: 11px; color: #9ca3af; margin-bottom: 16px;">बात करने के लिए पैक चुनें</p>
 
-        <!-- ₹99 PACK -->
-        <div class="pack-item" onclick="pickPack(120, 99)">
+        <div class="pack-item" onclick="selectPack(120, 99)">
           <div style="text-align: left;">
             <div style="font-weight: bold; color: #facc15; font-size: 13px;">120 कॉइन्स</div>
             <div style="font-size: 10px; color: #9ca3af;">बेसिक पैक</div>
@@ -520,17 +397,15 @@
           <div style="background: #ec4899; font-weight: bold; padding: 6px 12px; border-radius: 8px; font-size: 12px;">₹99</div>
         </div>
 
-        <!-- ₹150 PACK -->
-        <div class="pack-item" style="border: 1px solid #ec4899;" onclick="pickPack(250, 150)">
+        <div class="pack-item" style="border: 1px solid #ec4899;" onclick="selectPack(250, 150)">
           <div style="text-align: left;">
             <div style="font-weight: bold; color: #facc15; font-size: 13px;">250 कॉइन्स ⭐</div>
-            <div style="font-size: 10px; color: #9ca3af;">वीडियो + ऑडियो कॉल</div>
+            <div style="font-size: 10px; color: #9ca3af;">वीडियो कॉल + चैट</div>
           </div>
           <div style="background: linear-gradient(135deg, #ec4899, #8b5cf6); font-weight: bold; padding: 6px 12px; border-radius: 8px; font-size: 12px;">₹150</div>
         </div>
 
-        <!-- ₹250 PACK -->
-        <div class="pack-item" onclick="pickPack(500, 250)">
+        <div class="pack-item" onclick="selectPack(500, 250)">
           <div style="text-align: left;">
             <div style="font-weight: bold; color: #facc15; font-size: 13px;">500 कॉइन्स</div>
             <div style="font-size: 10px; color: #9ca3af;">रॉयल वीआईपी</div>
@@ -539,20 +414,6 @@
         </div>
       </div>
 
-      <!-- PAYTM PAYMENT SCREEN -->
       <div id="qrSection" style="display: none;">
-        <h4 style="font-size: 14px; margin-bottom: 6px;">Paytm UPI से भुगतान करें</h4>
+        <h4 style="font-size: 14px; margin-bottom: 6px;">Paytm UPI भुगतान</h4>
         <p style="color: #facc15; font-weight: bold; font-size: 13px; margin-bottom: 10px;">
-          पेमेंट राशि: ₹<span id="payAmountText">0</span> (<span id="payCoinsText">0</span> कॉइन्स)
-        </p>
-        <div style="background: white; padding: 10px; border-radius: 12px; display: inline-block; margin-bottom: 10px;">
-          <img id="payQrImage" src="" style="width: 170px; height: 170px; display: block;">
-        </div>
-        <p style="font-size: 11px; color: #9ca3af; margin-bottom: 10px;">UPI ID: <b style="color: #facc15;">paytmqr5ufcdm@ptys</b></p>
-        <a id="payDirectBtn" href="#" style="display: block; background: #2563eb; color: #fff; padding: 10px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: bold; margin-bottom: 8px;">
-          सीधे UPI ऐप से पे करें
-        </a>
-        <a id="payWaBtn" href="#" target="_blank" style="display: block; background: #22c55e; color: #fff; padding: 10px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: bold;">
-          पेमेंट स्क्रीनशॉट भेजें
-        </a>
-  
