@@ -101,6 +101,18 @@
       { id: 5, name: "पूजा मिश्रा", age: 24, city: "लखनऊ", rate: 20, img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" },
       { id: 6, name: "नेहा पाटिल", age: 22, city: "पुणे", rate: 25, img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" },
       { id: 7, name: "काव्या रेड्डी", age: 23, city: "हैदराबाद", rate: 30, img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80" },
+        var UPI_ID = "paytmqr5ufcdm@ptys";
+    var MERCHANT_NAME = "Jay Hind Yadav";
+    var WA_NUMBER = "919890093797";
+
+    var profiles = [
+      { id: 1, name: "प्रिया शर्मा", age: 22, city: "मुंबई", rate: 30, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" },
+      { id: 2, name: "रिया वर्मा", age: 21, city: "दिल्ली", rate: 25, img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" },
+      { id: 3, name: "अनन्या सेन", age: 23, city: "कोलकाता", rate: 30, img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" },
+      { id: 4, name: "सिमरन कौर", age: 22, city: "चंडीगढ़", rate: 35, img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80" },
+      { id: 5, name: "पूजा मिश्रा", age: 24, city: "लखनऊ", rate: 20, img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" },
+      { id: 6, name: "नेहा पाटिल", age: 22, city: "पुणे", rate: 25, img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" },
+      { id: 7, name: "काव्या रेड्डी", age: 23, city: "हैदराबाद", rate: 30, img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80" },
       { id: 8, name: "स्नेहा जोशी", age: 21, city: "नागपुर", rate: 20, img: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" },
       { id: 9, name: "निशा गुप्ता", age: 24, city: "जयपुर", rate: 25, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" },
       { id: 10, name: "तन्वी सिंह", age: 22, city: "इंदौर", rate: 30, img: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=400&q=80" }
@@ -112,8 +124,148 @@
     var callTimer = null;
     var callSeconds = 0;
 
-    // 1. लॉगिन फंक्शन्स
     function loginAsCustomer() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('userApp').style.display = 'block';
+      displayProfiles();
+    }
+
+    function loginAsHost() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('hostApp').style.display = 'block';
+    }
+
+    function returnToLogin() {
+      document.getElementById('hostApp').style.display = 'none';
+      document.getElementById('userApp').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'flex';
+    }
+
+    function displayProfiles() {
+      var container = document.getElementById('profilesGrid');
+      container.innerHTML = "";
+      for (var i = 0; i < profiles.length; i++) {
+        var p = profiles[i];
+        var div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = '<img src="' + p.img + '">' +
+          '<h4>' + p.name + ', ' + p.age + '</h4>' +
+          '<p>' + p.city + ' • ' + p.rate + '🪙/min</p>' +
+          '<button class="btn-action" onclick="startCustomerCall(' + p.id + ')">📞 कॉल करें</button>';
+        container.appendChild(div);
+      }
+    }
+
+    function startCustomerCall(id) {
+      var p = null;
+      for (var i = 0; i < profiles.length; i++) {
+        if (profiles[i].id === id) { p = profiles[i]; break; }
+      }
+      if (!p) return;
+
+      if (userCoins < p.rate) {
+        showRecharge();
+        return;
+      }
+
+      document.getElementById('callName').innerText = p.name;
+      document.getElementById('callPhoto').src = p.img;
+      document.getElementById('callModal').style.display = 'flex';
+
+      callSeconds = 0;
+      clearInterval(callTimer);
+      callTimer = setInterval(function() {
+        callSeconds++;
+        var m = Math.floor(callSeconds / 60);
+        var s = callSeconds % 60;
+        document.getElementById('callTime').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+
+        if (callSeconds % 60 === 0) {
+          if (userCoins >= p.rate) {
+            userCoins -= p.rate;
+            document.getElementById('userCoinsText').innerText = userCoins;
+            hostMinutes++;
+            hostEarnings += 15;
+          } else {
+            endTheCall();
+            showRecharge();
+          }
+        }
+      }, 1000);
+    }
+
+    function endTheCall() {
+      clearInterval(callTimer);
+      document.getElementById('callModal').style.display = 'none';
+      var mElem = document.getElementById('hostMinutesText');
+      var eElem = document.getElementById('hostEarningsText');
+      if (mElem) mElem.innerText = hostMinutes + " min";
+      if (eElem) eElem.innerText = "₹" + hostEarnings.toFixed(2);
+    }
+
+    function testHostCall() {
+      document.getElementById('callName').innerText = "राहुल (कस्टमर कॉल)";
+      document.getElementById('callPhoto').src = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80";
+      document.getElementById('callModal').style.display = 'flex';
+
+      callSeconds = 0;
+      clearInterval(callTimer);
+      callTimer = setInterval(function() {
+        callSeconds++;
+        var m = Math.floor(callSeconds / 60);
+        var s = callSeconds % 60;
+        document.getElementById('callTime').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+
+        if (callSeconds % 60 === 0) {
+          hostMinutes++;
+          hostEarnings += 15;
+          document.getElementById('hostMinutesText').innerText = hostMinutes + " min";
+          document.getElementById('hostEarningsText').innerText = "₹" + hostEarnings.toFixed(2);
+        }
+      }, 1000);
+    }
+
+    function withdrawMoney() {
+      var upi = document.getElementById('hostUpiInput').value.trim();
+      if (!upi) {
+        return;
+      }
+      var msg = "नमस्ते Jay Hind सर, मैं LoveJayHind की होस्ट हूँ। मेरी कमाई ₹" + hostEarnings + " (" + hostMinutes + " मिनट) हुई है। कृपया मेरे इस UPI ID पर ट्रांसफर करें: " + upi;
+      window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg), "_blank");
+    }
+
+    function showRecharge() {
+      document.getElementById('packSection').style.display = 'block';
+      document.getElementById('qrSection').style.display = 'none';
+      document.getElementById('rechargeModal').style.display = 'flex';
+    }
+
+    function closeRecharge() {
+      document.getElementById('rechargeModal').style.display = 'none';
+    }
+
+    function pickPack(coins, price) {
+      document.getElementById('packSection').style.display = 'none';
+      document.getElementById('qrSection').style.display = 'block';
+
+      document.getElementById('payAmountText').innerText = price;
+      document.getElementById('payCoinsText').innerText = coins;
+
+      var upiString = "upi://pay?pa=" + UPI_ID + "&pn=" + encodeURIComponent(MERCHANT_NAME) + "&am=" + price + "&cu=INR&tn=LoveJayHind%20Coins";
+      var qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(upiString);
+
+      document.getElementById('payQrImage').src = qrApiUrl;
+      document.getElementById('payDirectBtn').href = upiString;
+
+      var waMsg = "नमस्ते Jay Hind सर, मैंने LoveJayHind पर ₹" + price + " का रिचार्ज किया है। मेरे " + coins + " कॉइन्स जोड़ें।";
+      document.getElementById('payWaBtn').href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(waMsg);
+    }
+
+    function returnToPacks() {
+      document.getElementById('qrSection').style.display = 'none';
+      document.getElementById('packSection').style.display = 'block';
+    }
+
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('userApp').style.display = 'block';
       displayProfiles();
