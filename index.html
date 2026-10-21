@@ -3,137 +3,291 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LoveJayHind.com - Premium Dating & Host Earning</title>
+  <title>LoveJayHind.com - Dating & Video Call</title>
+  
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #0b0f19; color: #f3f4f6; }
-    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #0b0f19; color: #ffffff; }
+
     /* Login Screen */
     #loginScreen {
-      position: fixed; inset: 0; z-index: 9999; background: #0b0f19;
+      position: fixed; inset: 0; z-index: 99999; background: #0b0f19;
       display: flex; align-items: center; justify-content: center; padding: 20px;
     }
-    .login-box {
-      background: #111827; border: 1px solid rgba(236, 72, 153, 0.4);
-      border-radius: 24px; padding: 30px 20px; width: 100%; max-width: 360px; text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    .login-card {
+      background: #111827; border: 2px solid #ec4899; border-radius: 24px;
+      padding: 30px 20px; width: 100%; max-width: 350px; text-align: center;
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
     }
-    .logo-badge {
-      width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 12px;
+    .logo-circle {
+      width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 12px;
       background: linear-gradient(135deg, #ec4899, #8b5cf6);
       display: flex; align-items: center; justify-content: center;
-      font-size: 26px; font-weight: 900; color: #fff;
+      font-size: 24px; font-weight: bold; color: #fff;
     }
-    .title-gradient {
-      font-size: 24px; font-weight: 900;
-      background: linear-gradient(to right, #ec4899, #a855f7);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    .btn-main {
+      width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 14px;
+      font-weight: bold; cursor: pointer; margin-top: 14px; display: block;
     }
-    .btn-user {
-      width: 100%; background: #ffffff; color: #111827; font-weight: bold;
-      padding: 14px; border-radius: 12px; border: none; font-size: 14px;
-      margin-top: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-host {
-      width: 100%; background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #ffffff;
-      font-weight: bold; padding: 14px; border-radius: 12px; border: none; font-size: 14px;
-      margin-top: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-      box-shadow: 0 4px 15px rgba(236,72,153,0.4);
-    }
+    .btn-user { background: #ffffff; color: #111827; }
+    .btn-host { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #ffffff; box-shadow: 0 4px 15px rgba(236,72,153,0.4); }
 
-    /* App Header */
+    /* Top Bar */
     header {
-      position: sticky; top: 0; z-index: 100; background: rgba(17, 24, 39, 0.95);
-      backdrop-filter: blur(8px); border-bottom: 1px solid rgba(236, 72, 153, 0.3);
-      padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100; background: #111827;
+      border-bottom: 1px solid #374151; padding: 12px 16px;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .coin-badge {
-      background: #1f2937; border: 1px solid rgba(234, 179, 8, 0.5);
-      padding: 6px 12px; border-radius: 20px; font-weight: bold; color: #facc15; font-size: 13px;
-    }
-    .btn-recharge {
-      background: linear-gradient(135deg, #ec4899, #8b5cf6); border: none;
-      color: #fff; font-size: 12px; font-weight: bold; padding: 6px 14px; border-radius: 20px; cursor: pointer;
+    .coin-box {
+      background: #1f2937; border: 1px solid #eab308; padding: 6px 12px;
+      border-radius: 20px; color: #facc15; font-size: 13px; font-weight: bold;
     }
 
-    /* Grid & Cards */
+    /* Content Area */
     .container { max-width: 600px; margin: 0 auto; padding: 16px; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .card {
       background: #111827; border: 1px solid #1f2937; border-radius: 16px;
-      overflow: hidden; padding: 10px; display: flex; flex-direction: column;
+      padding: 10px; display: flex; flex-direction: column; overflow: hidden;
     }
     .card img { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; }
     .card h4 { font-size: 14px; margin-top: 8px; }
     .card p { font-size: 11px; color: #9ca3af; margin-bottom: 8px; }
-    .btn-call {
+    .btn-action {
       background: linear-gradient(135deg, #ec4899, #8b5cf6); border: none;
-      color: white; font-weight: bold; font-size: 12px; padding: 8px; border-radius: 10px; cursor: pointer;
+      color: #fff; padding: 8px; border-radius: 10px; font-size: 12px; font-weight: bold; cursor: pointer;
     }
 
     /* Host Panel */
-    .host-card {
+    .host-box {
       background: linear-gradient(135deg, #4c1d95, #831843); border-radius: 20px;
-      padding: 18px; border: 1px solid rgba(236, 72, 153, 0.4); margin-bottom: 16px;
+      padding: 20px; border: 1px solid #ec4899; margin-bottom: 16px;
     }
-    .host-stats { display: flex; gap: 10px; margin-top: 14px; }
-    .stat-box { flex: 1; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; text-align: center; }
 
     /* Modals */
-    .modal {
-      position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,0.85);
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.85);
       display: none; align-items: center; justify-content: center; padding: 16px;
     }
-    .modal-content {
-      background: #111827; border: 1px solid rgba(236,72,153,0.3); border-radius: 20px;
-      width: 100%; max-width: 360px; padding: 20px; text-align: center; position: relative;
+    .modal-box {
+      background: #111827; border: 1px solid #ec4899; border-radius: 20px;
+      width: 100%; max-width: 350px; padding: 20px; text-align: center; position: relative;
     }
-    .close-btn { position: absolute; top: 12px; right: 14px; background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
-    .pack-row {
-      display: flex; justify-content: space-between; align-items: center;
-      background: #1f2937; padding: 12px 16px; border-radius: 12px; margin-bottom: 10px; cursor: pointer;
+    .pack-item {
+      background: #1f2937; padding: 12px 16px; border-radius: 12px;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; cursor: pointer;
     }
 
-    /* WhatsApp Button */
-    .floating-wa {
-      position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+    /* Floating WhatsApp */
+    .wa-btn {
+      position: fixed; bottom: 20px; right: 20px; z-index: 999;
       background: #22c55e; color: #fff; width: 56px; height: 56px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; text-decoration: none;
-      font-size: 26px; box-shadow: 0 4px 15px rgba(34, 197, 94, 0.5);
+      display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none;
+      box-shadow: 0 4px 15px rgba(34, 197, 94, 0.5);
     }
   </style>
+
+  <script>
+    // डेटा व सेटिंग्स
+    var UPI_ID = "paytmqr5ufcdm@ptys";
+    var MERCHANT_NAME = "Jay Hind Yadav";
+    var WA_NUMBER = "919890093797";
+
+    var profiles = [
+      { id: 1, name: "प्रिया शर्मा", age: 22, city: "मुंबई", rate: 30, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" },
+      { id: 2, name: "रिया वर्मा", age: 21, city: "दिल्ली", rate: 25, img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" },
+      { id: 3, name: "अनन्या सेन", age: 23, city: "कोलकाता", rate: 30, img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" },
+      { id: 4, name: "सिमरन कौर", age: 22, city: "चंडीगढ़", rate: 35, img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80" },
+      { id: 5, name: "पूजा मिश्रा", age: 24, city: "लखनऊ", rate: 20, img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" },
+      { id: 6, name: "नेहा पाटिल", age: 22, city: "पुणे", rate: 25, img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80" },
+      { id: 7, name: "काव्या रेड्डी", age: 23, city: "हैदराबाद", rate: 30, img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80" },
+      { id: 8, name: "स्नेहा जोशी", age: 21, city: "नागपुर", rate: 20, img: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" },
+      { id: 9, name: "निशा गुप्ता", age: 24, city: "जयपुर", rate: 25, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" },
+      { id: 10, name: "तन्वी सिंह", age: 22, city: "इंदौर", rate: 30, img: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=400&q=80" }
+    ];
+
+    var userCoins = 60;
+    var hostMinutes = 0;
+    var hostEarnings = 0;
+    var callTimer = null;
+    var callSeconds = 0;
+
+    // 1. लॉगिन फंक्शन्स
+    function loginAsCustomer() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('userApp').style.display = 'block';
+      displayProfiles();
+    }
+
+    function loginAsHost() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('hostApp').style.display = 'block';
+    }
+
+    function returnToLogin() {
+      document.getElementById('hostApp').style.display = 'none';
+      document.getElementById('userApp').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'flex';
+    }
+
+    // 2. प्रोफाइल्स लोड करना
+    function displayProfiles() {
+      var html = "";
+      for (var i = 0; i < profiles.length; i++) {
+        var p = profiles[i];
+        html += '<div class="card">' +
+          '<img src="' + p.img + '">' +
+          '<h4>' + p.name + ', ' + p.age + '</h4>' +
+          '<p>' + p.city + ' • ' + p.rate + '🪙/min</p>' +
+          '<button class="btn-action" onclick="startCustomerCall(' + p.id + ')">📞 कॉल करें</button>' +
+        '</div>';
+      }
+      document.getElementById('profilesGrid').innerHTML = html;
+    }
+
+    // 3. कॉलिंग सिस्टम
+    function startCustomerCall(id) {
+      var p = profiles.find(function(x){ return x.id === id; });
+      if (userCoins < p.rate) {
+        alert("कॉल करने के लिए आपके पास कॉइन्स कम हैं। कृपया रिचार्ज करें!");
+        showRecharge();
+        return;
+      }
+
+      document.getElementById('callName').innerText = p.name;
+      document.getElementById('callPhoto').src = p.img;
+      document.getElementById('callModal').style.display = 'flex';
+
+      callSeconds = 0;
+      clearInterval(callTimer);
+      callTimer = setInterval(function() {
+        callSeconds++;
+        var m = Math.floor(callSeconds / 60);
+        var s = callSeconds % 60;
+        document.getElementById('callTime').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+
+        if (callSeconds % 60 === 0) {
+          if (userCoins >= p.rate) {
+            userCoins -= p.rate;
+            document.getElementById('userCoinsText').innerText = userCoins;
+            hostMinutes++;
+            hostEarnings += 15;
+          } else {
+            alert("कॉइन्स समाप्त हो गए!");
+            endTheCall();
+            showRecharge();
+          }
+        }
+      }, 1000);
+    }
+
+    function endTheCall() {
+      clearInterval(callTimer);
+      document.getElementById('callModal').style.display = 'none';
+      document.getElementById('hostMinutesText').innerText = hostMinutes + " min";
+      document.getElementById('hostEarningsText').innerText = "₹" + hostEarnings.toFixed(2);
+    }
+
+    // 4. होस्ट टेस्ट कॉल व विथड्रॉल
+    function testHostCall() {
+      document.getElementById('callName').innerText = "राहुल (कस्टमर कॉल)";
+      document.getElementById('callPhoto').src = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80";
+      document.getElementById('callModal').style.display = 'flex';
+
+      callSeconds = 0;
+      clearInterval(callTimer);
+      callTimer = setInterval(function() {
+        callSeconds++;
+        var m = Math.floor(callSeconds / 60);
+        var s = callSeconds % 60;
+        document.getElementById('callTime').innerText = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+
+        if (callSeconds % 60 === 0) {
+          hostMinutes++;
+          hostEarnings += 15;
+          document.getElementById('hostMinutesText').innerText = hostMinutes + " min";
+          document.getElementById('hostEarningsText').innerText = "₹" + hostEarnings.toFixed(2);
+        }
+      }, 1000);
+    }
+
+    function withdrawMoney() {
+      var upi = document.getElementById('hostUpiInput').value.trim();
+      if (!upi) {
+        alert("कृपया अपनी UPI ID डालें!");
+        return;
+      }
+      var msg = "नमस्ते Jay Hind सर, मैं LoveJayHind की होस्ट हूँ। मेरी कमाई ₹" + hostEarnings + " (" + hostMinutes + " मिनट) हुई है। कृपया मेरे इस UPI ID पर ट्रांसफर करें: " + upi;
+      window.open("https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg), "_blank");
+    }
+
+    // 5. रिचार्ज व Paytm QR
+    function showRecharge() {
+      document.getElementById('packSection').style.display = 'block';
+      document.getElementById('qrSection').style.display = 'none';
+      document.getElementById('rechargeModal').style.display = 'flex';
+    }
+
+    function closeRecharge() {
+      document.getElementById('rechargeModal').style.display = 'none';
+    }
+
+    function pickPack(coins, price) {
+      document.getElementById('packSection').style.display = 'none';
+      document.getElementById('qrSection').style.display = 'block';
+
+      document.getElementById('payAmountText').innerText = price;
+      document.getElementById('payCoinsText').innerText = coins;
+
+      var upiString = "upi://pay?pa=" + UPI_ID + "&pn=" + encodeURIComponent(MERCHANT_NAME) + "&am=" + price + "&cu=INR&tn=LoveJayHind%20Coins";
+      var qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(upiString);
+
+      document.getElementById('payQrImage').src = qrApiUrl;
+      document.getElementById('payDirectBtn').href = upiString;
+
+      var waMsg = "नमस्ते Jay Hind सर, मैंने LoveJayHind पर ₹" + price + " का रिचार्ज किया है। मेरे " + coins + " कॉइन्स जोड़ें। (स्क्रीनशॉट संलग्न है)";
+      document.getElementById('payWaBtn').href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(waMsg);
+    }
+
+    function returnToPacks() {
+      document.getElementById('qrSection').style.display = 'none';
+      document.getElementById('packSection').style.display = 'block';
+    }
+  </script>
 </head>
 <body>
 
-  <!-- 1. LOGIN SCREEN -->
+  <!-- ================= 1. LOGIN SCREEN ================= -->
   <div id="loginScreen">
-    <div class="login-box">
-      <div class="logo-badge">LJ</div>
-      <h1 class="title-gradient">LoveJayHind.com</h1>
-      <p style="font-size: 12px; color: #9ca3af; margin-top: 4px;">100% Real Calling & Host Earnings</p>
+    <div class="login-card">
+      <div class="logo-circle">LJ</div>
+      <h2 style="font-size: 22px; margin-bottom: 4px;">LoveJayHind<span style="color:#ec4899; font-size:12px;">.com</span></h2>
+      <p style="font-size: 11px; color: #9ca3af; margin-bottom: 20px;">100% Real Dating & Host Earnings</p>
 
-      <button type="button" class="btn-user" onclick="openUserApp()">
-        <span style="color: #4285F4; font-size: 16px;">G</span> Google से लॉगिन करें (कस्टमर)
+      <!-- Google / Customer Login Button -->
+      <button class="btn-main btn-user" onclick="loginAsCustomer()" ontouchstart="loginAsCustomer()">
+        Google से लॉगिन करें (कस्टमर)
       </button>
 
-      <button type="button" class="btn-host" onclick="openHostApp()">
-        ⭐ लड़की / Host लॉगिन (कमाई करें)
+      <!-- Host / Girl Login Button -->
+      <button class="btn-main btn-host" onclick="loginAsHost()" ontouchstart="loginAsHost()">
+        ⭐ लड़की / Host लॉगिन (बात करके कमाएं)
       </button>
 
-      <p style="font-size: 10px; color: #6b7280; margin-top: 18px;">18+ केवल। सुरक्षित वीडियो नेटवर्क।</p>
+      <p style="font-size: 10px; color: #6b7280; margin-top: 20px;">18+ केवल। सुरक्षित और वेरिफाइड नेटवर्क।</p>
     </div>
   </div>
 
-  <!-- 2. USER MAIN APP -->
+  <!-- ================= 2. USER MAIN APP ================= -->
   <div id="userApp" style="display: none;">
     <header>
       <div>
-        <div class="title-gradient" style="font-size: 18px;">LoveJayHind<span style="font-size: 10px; color: #ec4899;">.com</span></div>
+        <h3 style="font-size: 18px;">LoveJayHind<span style="color:#ec4899; font-size:11px;">.com</span></h3>
         <p style="font-size: 10px; color: #9ca3af;">यूजर मोड</p>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
-        <div class="coin-badge">🪙 <span id="userCoins">60</span></div>
-        <button class="btn-recharge" onclick="openRechargeModal()">+ कॉइन</button>
+        <div class="coin-box">🪙 <span id="userCoinsText">60</span></div>
+        <button class="btn-action" onclick="showRecharge()" style="padding: 6px 12px; border-radius: 20px;">+ कॉइन</button>
       </div>
     </header>
 
@@ -141,433 +295,112 @@
       <div style="background: linear-gradient(135deg, #3730a3, #831843); padding: 14px; border-radius: 16px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
         <div>
           <span style="background: #ec4899; font-size: 9px; font-weight: bold; padding: 2px 6px; border-radius: 10px;">VIP LIVE</span>
-          <h3 style="font-size: 14px; margin-top: 4px;">लाइ
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LoveJayHind.com - Premium Video & Host Earnings</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      background-color: #0b0f19;
-      color: #f3f4f6;
-      font-family: system-ui, -apple-system, sans-serif;
-    }<!DOCTYPE html>
-<html lang="hi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LoveJayHind.com - Premium Video & Host Earnings</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      background-color: #0b0f19;
-      color: #f3f4f6;
-      font-family: system-ui, -apple-system, sans-serif;
-    }
-    .gradient-pink {
-      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
-    }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col pb-20">
-
-  <!-- ================= 1. LOGIN GATE SCREEN ================= -->
-  <div id="loginScreen" class="fixed inset-0 z-50 bg-[#0b0f19] flex items-center justify-center p-4">
-    <div class="w-full max-w-sm bg-gray-900 border border-pink-500/30 rounded-3xl p-6 shadow-2xl text-center">
-      <div class="w-16 h-16 rounded-full gradient-pink mx-auto flex items-center justify-center font-black text-2xl text-white shadow-lg mb-3">
-        LJ
-      </div>
-      <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400">
-        LoveJayHind<span class="text-xs text-pink-400">.com</span>
-      </h2>
-      <p class="text-xs text-gray-400 mt-1 mb-6">100% Real Calling & Host Earning Network</p>
-
-      <div class="space-y-3">
-        <!-- USER GOOGLE LOGIN -->
-        <button id="googleBtn" type="button" class="w-full bg-white text-gray-800 font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition shadow-md text-sm cursor-pointer active:scale-95">
-          <svg class="w-5 h-5" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-          </svg>
-          Google से लॉगिन करें (लड़कों के लिए)
-        </button>
-
-        <!-- HOST / GIRL LOGIN BUTTON -->
-        <button id="hostBtn" type="button" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-pink-600/30 cursor-pointer active:scale-95">
-          <i class="fa-solid fa-gem text-yellow-300"></i> लड़की / Host लॉगिन (बात करके कमाएं)
-        </button>
+          <h3 style="font-size: 14px; margin-top: 4px;">लाइव वीडियो व ऑडियो चैट</h3>
+          <p style="font-size: 11px; color: #e5e7eb;">लड़कियों से सीधी बात करें</p>
+        </div>
+        <button class="btn-action" onclick="showRecharge()" style="padding: 6px 14px;">प्लान्स</button>
       </div>
 
-      <p class="text-[10px] text-gray-500 mt-6">
-        18+ केवल। सुरक्षित और वेरिफाइड वीडियो कॉलिंग प्लेटफॉर्म।
-      </p>
+      <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 12px; color: #9ca3af;">
+        <span>🟢 ऑनलाइन लड़कियां</span>
+        <span style="color: #ec4899;">10 एक्टिव</span>
+      </div>
+
+      <div class="grid" id="profilesGrid"></div>
     </div>
   </div>
 
-  <!-- ================= 2. USER MAIN APP ================= -->
-  <div id="mainApp" style="display: none;" class="flex-col flex-1">
-    
-    <!-- HEADER -->
-    <header class="sticky top-0 z-40 bg-[#111827]/95 border-b border-pink-500/30 px-4 py-3 flex items-center justify-between shadow-lg">
-      <div class="flex items-center space-x-2">
-        <div class="w-10 h-10 rounded-full gradient-pink flex items-center justify-center font-black text-xl text-white shadow-md">
-          LJ
-        </div>
+  <!-- ================= 3. HOST DASHBOARD ================= -->
+  <div id="hostApp" style="display: none;" class="container">
+    <div class="host-box">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
-          <h1 class="text-lg font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400">
-            LoveJayHind<span class="text-xs text-pink-400">.com</span>
-          </h1>
-          <p id="userGreeting" class="text-[10px] text-gray-400">यूजर मोड</p>
+          <span style="background: #22c55e; font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 10px;">HOST ACTIVE</span>
+          <h2 style="font-size: 16px; margin-top: 6px;">प्रिया शर्मा (Verified Host)</h2>
+          <p style="font-size: 11px; color: #e5e7eb;">दर: ₹15 / मिनट (आपकी सीधी कमाई)</p>
         </div>
+        <button onclick="returnToLogin()" style="background: #111827; border: 1px solid #374151; color: #9ca3af; font-size: 11px; padding: 6px 10px; border-radius: 8px; cursor: pointer;">लॉगआउट</button>
       </div>
 
-      <!-- COIN WALLET -->
-      <div class="flex items-center space-x-2">
-        <div class="bg-gray-800 border border-yellow-500/40 px-3 py-1 rounded-full flex items-center space-x-2 shadow-inner">
-          <i class="fa-solid fa-coins text-yellow-400 text-xs animate-pulse"></i>
-          <span id="userCoins" class="font-bold text-yellow-300 text-xs">60</span>
+      <div style="display: flex; gap: 10px; margin-top: 14px;">
+        <div style="flex: 1; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; text-align: center;">
+          <div style="font-size: 11px; color: #9ca3af;">कुल बात (मिनट)</div>
+          <div style="font-size: 18px; font-weight: bold; color: #facc15;" id="hostMinutesText">0 min</div>
         </div>
-        <button onclick="openRechargeModal()" class="gradient-pink text-white text-xs font-bold
-
-    .gradient-pink {
-      background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
-    }
-  </style>
-</head>
-<body class="min-h-screen flex flex-col pb-20 selection:bg-pink-500 selection:text-white">
-
-  <!-- ================= 1. LOGIN GATE SCREEN ================= -->
-  <div id="loginScreen" class="fixed inset-0 z-50 bg-[#0b0f19] flex items-center justify-center p-4">
-    <div class="w-full max-w-sm bg-gray-900/90 border border-pink-500/30 rounded-3xl p-6 shadow-2xl backdrop-blur-xl text-center">
-      <div class="w-16 h-16 rounded-full gradient-pink mx-auto flex items-center justify-center font-black text-2xl text-white shadow-lg mb-3">
-        LJ
-      </div>
-      <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400">
-        LoveJayHind<span class="text-xs text-pink-400">.com</span>
-      </h2>
-      <p class="text-xs text-gray-400 mt-1 mb-5">100% Real Calling & Host Earning App</p>
-
-      <div class="space-y-3">
-        <!-- USER LOGIN -->
-        <button onclick="handleUserLogin('Google User')" class="w-full bg-white text-gray-800 font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition shadow-md text-sm active:scale-95">
-          <svg class="w-5 h-5" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-          </svg>
-          यूजर लॉगिन (बात करने के लिए)
-        </button>
-
-        <!-- HOST / GIRL LOGIN -->
-        <button onclick="handleHostLogin()" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-pink-600/30">
-          <i class="fa-solid fa-gem text-yellow-300"></i> लड़की / Host लॉगिन (बात करके पैसे कमाएं)
-        </button>
-      </div>
-
-      <p class="text-[10px] text-gray-500 mt-5">
-        18+ ओनली। सुरक्षित और वेरिफाइड ऑडियो/वीडियो नेटवर्क।
-      </p>
-    </div>
-  </div>
-
-  <!-- ================= 2. HOST / FEMALE EARNING DASHBOARD ================= -->
-  <div id="hostDashboard" class="hidden flex-col flex-1 p-4 max-w-md mx-auto w-full">
-    <div class="bg-gradient-to-r from-purple-900/80 to-pink-900/80 p-5 rounded-3xl border border-pink-500/40 shadow-xl mb-4">
-      <div class="flex items-center justify-between mb-3">
-        <div>
-          <span class="bg-green-500 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Host Active</span>
-          <h3 class="text-lg font-bold text-white mt-1">प्रिया शर्मा (Host)</h3>
-          <p class="text-xs text-gray-300">कॉलिंग दर: ₹15 / मिनट (आपकी कमाई)</p>
-        </div>
-        <button onclick="logoutToLogin()" class="text-xs text-gray-400 bg-gray-800/80 px-2.5 py-1 rounded-lg">
-          लॉगआउट
-        </button>
-      </div>
-
-      <!-- EARNING STATS -->
-      <div class="grid grid-cols-2 gap-3 mt-4">
-        <div class="bg-black/40 p-3 rounded-2xl border border-white/10">
-          <span class="text-[11px] text-gray-400">कुल बात की (मिनट)</span>
-          <h4 id="hostMinutes" class="text-xl font-black text-yellow-400">0 min</h4>
-        </div>
-        <div class="bg-black/40 p-3 rounded-2xl border border-white/10">
-          <span class="text-[11px] text-gray-400">कुल कमाई (₹)</span>
-          <h4 id="hostEarnings" class="text-xl font-black text-green-400">₹0.00</h4>
+        <div style="flex: 1; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 12px; text-align: center;">
+          <div style="font-size: 11px; color: #9ca3af;">कुल कमाई (₹)</div>
+          <div style="font-size: 18px; font-weight: bold; color: #4ade80;" id="hostEarningsText">₹0.00</div>
         </div>
       </div>
     </div>
 
-    <!-- WITHDRAW CARD -->
-    <div class="bg-gray-900/90 p-5 rounded-3xl border border-gray-800 shadow-xl mb-4">
-      <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
-        <i class="fa-solid fa-wallet text-pink-400"></i> पैसे बैंक / UPI में निकालें
-      </h4>
-      <p class="text-xs text-gray-400 mb-4">जितना टाइम आप लड़कों से बात करेंगी, तुरंत पैसा आपके बैलेंस में जुड़ेगा।</p>
-      
-      <input id="hostUpiInput" type="text" placeholder="अपनी UPI ID डालें (उदा: 98900...@paytm)" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 text-xs text-white mb-3 focus:outline-none focus:border-pink-500">
-      
-      <button onclick="requestPayout()" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 shadow-md">
-        <i class="fa-solid fa-money-bill-transfer"></i> विथड्रॉल रिक्वेस्ट भेजें
+    <div style="background: #111827; padding: 18px; border-radius: 18px; border: 1px solid #1f2937; margin-bottom: 16px;">
+      <h3 style="font-size: 14px; margin-bottom: 6px;">पैसे बैंक / UPI में निकालें</h3>
+      <p style="font-size: 11px; color: #9ca3af; margin-bottom: 12px;">जितनी देर बात करेंगी, उतना पैसा तुरंत निकाल सकती हैं।</p>
+      <input id="hostUpiInput" type="text" placeholder="अपनी UPI ID डालें (उदा: 98900...@paytm)" style="width: 100%; background: #1f2937; border: 1px solid #374151; padding: 10px; border-radius: 10px; color: #fff; font-size: 12px; margin-bottom: 10px;">
+      <button onclick="withdrawMoney()" style="width: 100%; background: #22c55e; border: none; color: #fff; padding: 10px; border-radius: 10px; font-weight: bold; font-size: 12px; cursor: pointer;">
+        विथड्रॉल रिक्वेस्ट भेजें
       </button>
     </div>
 
-    <!-- DEMO CALL INCOMING SIMULATION -->
-    <div class="bg-gray-900/60 p-4 rounded-3xl border border-pink-500/20 text-center">
-      <p class="text-xs text-gray-400 mb-2">होस्ट कॉलिंग टेस्ट करें:</p>
-      <button onclick="simulateIncomingCall()" class="gradient-pink text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md active:scale-95">
-        <i class="fa-solid fa-phone mr-1"></i> टेस्ट कस्टमर कॉल रिसीव करें
+    <div style="text-align: center; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 14px;">
+      <button onclick="testHostCall()" class="btn-action" style="width: 100%; padding: 12px;">
+        📞 टेस्ट कस्टमर कॉल उठाएं
       </button>
     </div>
-  </div>
-
-  <!-- ================= 3. USER APP CONTENT ================= -->
-  <div id="mainApp" class="hidden flex-col flex-1">
-    
-    <!-- HEADER -->
-    <header class="sticky top-0 z-40 bg-[#111827]/90 backdrop-blur-md border-b border-pink-500/30 px-4 py-3 flex items-center justify-between shadow-lg">
-      <div class="flex items-center space-x-2">
-        <div class="w-10 h-10 rounded-full gradient-pink flex items-center justify-center font-black text-xl text-white shadow-md">
-          LJ
-        </div>
-        <div>
-          <h1 class="text-lg font-extrabold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400">
-            LoveJayHind<span class="text-xs text-pink-400">.com</span>
-          </h1>
-          <p id="userGreeting" class="text-[10px] text-gray-400">यूजर मोड</p>
-        </div>
-      </div>
-
-      <!-- COIN WALLET -->
-      <div class="flex items-center space-x-2">
-        <div class="bg-gray-800/90 border border-yellow-500/40 px-3 py-1.5 rounded-full flex items-center space-x-2 shadow-inner">
-          <i class="fa-solid fa-coins text-yellow-400 text-sm animate-pulse"></i>
-          <span id="userCoins" class="font-bold text-yellow-300 text-sm">60</span>
-        </div>
-        <button onclick="openRechargeModal()" class="gradient-pink text-white text-xs font-bold px-3 py-1.5 rounded-full hover:scale-105 transition shadow-md flex items-center gap-1 active:scale-95">
-          <i class="fa-solid fa-bolt"></i> रिचार्ज
-        </button>
-      </div>
-    </header>
-
-    <!-- PROFILES GRID -->
-    <main class="flex-1 px-4 max-w-5xl mx-auto w-full mt-4">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400 flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-green-500 animate-ping"></span> एक्टिव होस्ट्स (लड़कियां)
-        </h3>
-        <span class="text-xs text-pink-400 font-medium">10 प्रोफाइल्स ऑनलाइन</span>
-      </div>
-
-      <div id="profilesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-        <!-- प्रोफाइल्स JS से लोड होंगी -->
-      </div>
-    </main>
   </div>
 
   <!-- ================= 4. RECHARGE MODAL ================= -->
-  <div id="rechargeModal" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4">
-    <div class="bg-[#111827] w-full max-w-sm rounded-3xl border border-yellow-500/40 p-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-      <button onclick="closeRechargeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-        <i class="fa-solid fa-xmark text-lg"></i>
-      </button>
+  <div id="rechargeModal" class="modal-overlay">
+    <div class="modal-box">
+      <button onclick="closeRecharge()" style="position: absolute; top: 12px; right: 14px; background: none; border: none; color: #fff; font-size: 18px; cursor: pointer;">✕</button>
+      
+      <div id="packSection">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">प्रीमियम कॉइन रिचार्ज</h3>
+        <p style="font-size: 11px; color: #9ca3af; margin-bottom: 16px;">बात करने के लिए पैक चुनें</p>
 
-      <div id="packSelectionView">
-        <div class="text-center mb-4">
-          <div class="w-12 h-12 mx-auto rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-xl mb-2">
-            <i class="fa-solid fa-coins"></i>
+        <!-- ₹99 PACK -->
+        <div class="pack-item" onclick="pickPack(120, 99)">
+          <div style="text-align: left;">
+            <div style="font-weight: bold; color: #facc15; font-size: 13px;">120 कॉइन्स</div>
+            <div style="font-size: 10px; color: #9ca3af;">बेसिक पैक</div>
           </div>
-          <h3 class="text-lg font-bold text-white">प्रीमियम कॉइन रिचार्ज</h3>
-          <p class="text-xs text-gray-400">लड़कियों से बात करने के लिए कॉइन्स खरीदें</p>
+          <div style="background: #ec4899; font-weight: bold; padding: 6px 12px; border-radius: 8px; font-size: 12px;">₹99</div>
         </div>
 
-        <div class="space-y-3 mb-4">
-          <div onclick="selectPack(120, 99)" class="p-3.5 rounded-2xl border border-gray-700 bg-gray-800/60 cursor-pointer flex justify-between items-center transition active:scale-95">
-            <div>
-              <span class="font-bold text-sm text-yellow-400">120 कॉइन्स</span>
-              <p class="text-[11px] text-gray-400">बेसिक पैक</p>
-            </div>
-            <span class="text-xs font-extrabold bg-pink-600 px-3.5 py-1.5 rounded-xl">₹99</span>
+        <!-- ₹150 PACK -->
+        <div class="pack-item" style="border: 1px solid #ec4899;" onclick="pickPack(250, 150)">
+          <div style="text-align: left;">
+            <div style="font-weight: bold; color: #facc15; font-size: 13px;">250 कॉइन्स ⭐</div>
+            <div style="font-size: 10px; color: #9ca3af;">वीडियो + ऑडियो कॉल</div>
           </div>
+          <div style="background: linear-gradient(135deg, #ec4899, #8b5cf6); font-weight: bold; padding: 6px 12px; border-radius: 8px; font-size: 12px;">₹150</div>
+        </div>
 
-          <div onclick="selectPack(250, 150)" class="p-3.5 rounded-2xl border border-pink-500 bg-gradient-to-r from-pink-950/40 to-purple-950/40 cursor-pointer flex justify-between items-center relative transition active:scale-95">
-            <span class="absolute -top-2 left-3 bg-pink-500 text-white text-[9px] font-black px-2 py-0.5 rounded-full">POPULAR</span>
-            <div>
-              <span class="font-bold text-sm text-yellow-400">250 कॉइन्स</span>
-              <p class="text-[11px] text-gray-300">वीडियो + ऑडियो कॉलिंग</p>
-            </div>
-            <span class="text-xs font-extrabold bg-pink-500 px-3.5 py-1.5 rounded-xl">₹150</span>
+        <!-- ₹250 PACK -->
+        <div class="pack-item" onclick="pickPack(500, 250)">
+          <div style="text-align: left;">
+            <div style="font-weight: bold; color: #facc15; font-size: 13px;">500 कॉइन्स</div>
+            <div style="font-size: 10px; color: #9ca3af;">रॉयल वीआईपी</div>
           </div>
-
-          <div onclick="selectPack(500, 250)" class="p-3.5 rounded-2xl border border-yellow-500/60 bg-gradient-to-r from-yellow-950/30 to-gray-900 cursor-pointer flex justify-between items-center relative transition active:scale-95">
-            <span class="absolute -top-2 left-3 bg-yellow-500 text-black text-[9px] font-black px-2 py-0.5 rounded-full">ROYAL VIP</span>
-            <div>
-              <span class="font-bold text-sm text-yellow-400">500 कॉइन्स</span>
-              <p class="text-[11px] text-gray-400">अनलिमिटेड चैट + वीआईपी कॉल</p>
-            </div>
-            <span class="text-xs font-extrabold bg-yellow-500 text-black px-3.5 py-1.5 rounded-xl">₹250</span>
-          </div>
+          <div style="background: #eab308; color: #000; font-weight: bold; padding: 6px 12px; border-radius: 8px; font-size: 12px;">₹250</div>
         </div>
       </div>
 
-      <div id="paymentView" class="hidden text-center">
-        <h4 class="text-sm font-bold text-white mb-1">Paytm UPI से भुगतान करें</h4>
-        <p class="text-xs text-yellow-400 font-semibold mb-3">राशि: ₹<span id="payAmount">0</span> (<span id="payCoins">0</span> कॉइन्स)</p>
-
-        <div class="bg-white p-3 rounded-2xl inline-block shadow-xl mb-3">
-          <img id="qrImage" src="" alt="Paytm QR" class="w-44 h-44 mx-auto object-contain">
-        </div>
-
-        <p class="text-[11px] text-gray-300 font-mono select-all bg-gray-800 py-1 px-2 rounded-lg mb-3">
-          UPI ID: <span class="text-yellow-400 font-bold">paytmqr5ufcdm@ptys</span>
+      <!-- PAYTM PAYMENT SCREEN -->
+      <div id="qrSection" style="display: none;">
+        <h4 style="font-size: 14px; margin-bottom: 6px;">Paytm UPI से भुगतान करें</h4>
+        <p style="color: #facc15; font-weight: bold; font-size: 13px; margin-bottom: 10px;">
+          पेमेंट राशि: ₹<span id="payAmountText">0</span> (<span id="payCoinsText">0</span> कॉइन्स)
         </p>
-
-        <a id="directUpiBtn" href="#" class="w-full block bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl text-xs mb-2 transition active:scale-95">
-          <i class="fa-solid fa-mobile-screen-button mr-1"></i> सीधे UPI ऐप से पे करें
-        </a>
-
-        <a id="whatsappVerifyBtn" href="#" target="_blank" class="w-full block bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-xl text-xs transition active:scale-95">
-          <i class="fa-brands fa-whatsapp text-sm mr-1"></i> पेमेंट स्क्रीनशॉट भेजें
-        </a>
-
-        <button onclick="backToPacks()" class="mt-3 text-xs text-gray-400 underline">
-          दूसरा पैक चुनें
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= 5. VIDEO CALL OVERLAY ================= -->
-  <div id="videoModal" class="fixed inset-0 bg-black/95 z-50 hidden flex-col items-center justify-between p-4">
-    <div class="w-full flex items-center justify-between max-w-md pt-3">
-      <div class="flex items-center space-x-2">
-        <img id="callAvatar" src="" class="w-10 h-10 rounded-full border border-pink-500 object-cover">
-        <div>
-          <h4 id="callName" class="text-sm font-bold text-white">कॉलिंग...</h4>
-          <span class="text-[10px] text-green-400 flex items-center gap-1">
-            <i class="fa-solid fa-circle text-[7px]"></i> कनेक्टेड
-          </span>
+        <div style="background: white; padding: 10px; border-radius: 12px; display: inline-block; margin-bottom: 10px;">
+          <img id="payQrImage" src="" style="width: 170px; height: 170px; display: block;">
         </div>
-      </div>
-      <div class="bg-gray-800/80 px-3 py-1 rounded-full text-xs font-mono text-pink-400 border border-pink-500/20">
-        <i class="fa-solid fa-clock mr-1"></i> <span id="callTimer">00:00</span>
-      </div>
-    </div>
-
-    <div class="relative w-full max-w-md aspect-[3/4] bg-gray-900 rounded-3xl overflow-hidden border border-pink-500/30 flex items-center justify-center my-auto">
-      <img id="callVideoBg" src="" class="w-full h-full object-cover opacity-85">
-      <div class="absolute top-4 right-4 w-24 h-32 bg-gray-800 rounded-xl border border-white/20 overflow-hidden shadow-2xl flex items-center justify-center">
-        <span class="text-[10px] text-gray-400"><i class="fa-solid fa-user"></i> आपका कैमरा</span>
-      </div>
-      <div id="callRateBadge" class="absolute bottom-4 left-4 bg-black/60 px-3 py-1 rounded-full text-[11px] text-yellow-300">
-        दर: 30 कॉइन्स / मिनट
-      </div>
-    </div>
-
-    <div class="flex items-center justify-center space-x-6 pb-4">
-      <button class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center">
-        <i class="fa-solid fa-microphone"></i>
-      </button>
-      <button onclick="endCall()" class="w-14 h-14 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-600/50 text-xl active:scale-95">
-        <i class="fa-solid fa-phone-slash"></i>
-      </button>
-      <button class="w-12 h-12 rounded-full bg-gray-800 text-white flex items-center justify-center">
-        <i class="fa-solid fa-video"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- ================= 6. FLOATING WHATSAPP HELP ================= -->
-  <a href="https://wa.me/919890093797?text=नमस्ते%20Jay%20Hind%20सर,%20LoveJayHind%20सपोर्ट%20चाहिए।" target="_blank" class="fixed bottom-5 right-5 z-40 bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl shadow-green-500/50 text-2xl transition hover:scale-110 active:scale-95" title="WhatsApp हेल्प">
-    <i class="fa-brands fa-whatsapp"></i>
-  </a>
-
-  <!-- ================= JAVASCRIPT ================= -->
-  <script>
-    const UPI_ID = "paytmqr5ufcdm@ptys";
-    const MERCHANT_NAME = "Jay Hind Yadav";
-    const WHATSAPP_NUMBER = "919890093797";
-
-    // 10 प्रोफाइल्स
-    const profiles = [
-      { id: 1, name: "प्रिया शर्मा", age: 22, city: "मुंबई", lang: "हिंदी", rate: 30, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" },
-      { id: 2, name: "रिया वर्मा", age: 21, city: "दिल्ली", lang: "हिंदी", rate: 25, img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=500&q=80" },
-      { id: 3, name: "अनन्या सेन", age: 23, city: "कोलकाता", lang: "हिंदी", rate: 30, img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=500&q=80" },
-      { id: 4, name: "सिमरन कौर", age: 22, city: "चंडीगढ़", lang: "पंजाबी", rate: 35, img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80" },
-      { id: 5, name: "पूजा मिश्रा", age: 24, city: "लखनऊ", lang: "हिंदी", rate: 20, img: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=500&q=80" },
-      { id: 6, name: "नेहा पाटिल", age: 22, city: "पुणे", lang: "मराठी", rate: 25, img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=80" },
-      { id: 7, name: "काव्या रेड्डी", age: 23, city: "हैदराबाद", lang: "हिंदी", rate: 30, img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=500&q=80" },
-      { id: 8, name: "स्नेहा जोशी", age: 21, city: "नागपुर", lang: "हिंदी", rate: 20, img: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=500&q=80" },
-      { id: 9, name: "निशा गुप्ता", age: 24, city: "जयपुर", lang: "हिंदी", rate: 25, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" },
-      { id: 10, name: "तन्वी सिंह", age: 22, city: "इंदौर", lang: "हिंदी", rate: 30, img: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80" }
-    ];
-
-    let userCoins = 60;
-    let callSeconds = 0;
-    let activeCallInterval = null;
-    let isHostMode = false;
-
-    // होस्ट अर्निंग्स डेटा
-    let hostTotalMinutes = 0;
-    let hostTotalEarnings = 0;
-    const HOST_RATE_PER_MIN = 15; // लड़की को ₹15 प्रति मिनट
-
-    function handleUserLogin(name) {
-      isHostMode = false;
-      document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('mainApp').classList.remove('hidden');
-      document.getElementById('mainApp').classList.add('flex');
-      renderProfiles();
-    }
-
-    function handleHostLogin() {
-      isHostMode = true;
-      document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('hostDashboard').classList.remove('hidden');
-      document.getElementById('hostDashboard').classList.add('flex');
-      updateHostStats();
-    }
-
-    function logoutToLogin() {
-      document.getElementById('hostDashboard').classList.add('hidden');
-      document.getElementById('mainApp').classList.add('hidden');
-      document.getElementById('loginScreen').classList.remove('hidden');
-    }
-
-    function renderProfiles() {
-      const container = document.getElementById('profilesGrid');
-      container.innerHTML = profiles.map(p => `
-        <div class="bg-gray-900/90 rounded-2xl overflow-hidden border border-gray-800 p-2.5 flex flex-col shadow-lg">
-          <div class="relative h-40 rounded-xl overflow-hidden mb-2">
-            <img src="${p.img}" class="w-full h-full object-cover">
-            <span class="absolute top-2 left-2 bg-green-500 text-[8px] font-bold px-2 py-0.5 rounded-full">Online</span>
-            <span class="absolute bottom-2 right-2 bg-black/75 text-[9px] text-yellow-300 font-bold px-2 py-0.5 rounded">${p.rate}🪙/min</span>
-          </div>
-          <h4 class="font-bold text-xs text-white">${p.name}, ${p.age}</h4>
-          <p class="text-[10px] text-gray-400 mb-2">${p.city}</p>
-          <button onclick="startCall(${p.id})" class="gradient-pink py-1.5 rounded-xl text-xs font-bold text-white shadow-md active:scale-95">
-            <i class="fa-solid fa-video mr-1"></i> कॉल करें
-          </button>
-        </div>
-      `).join('');
-    }
-
-    function startCall(id) {
-      const profile = profiles.find(p => p.id === id);
-      if (userCoins < profile.rate) {
-        alert("कॉल करने के लिए आपके पास पर्याप्त कॉइन्स नहीं हैं। कृपया रिचार्ज करें!");
-        openRechargeModal();
-        return;
-      }
-
-      document.getElementById('callName').innerText = profile.name;
-      document.getElementById('callAvatar').src = profile.img;
-      document.getElementById('callVideoBg').src = profile.img;
-      document.getElementById('videoModal').classList.remo
+        <p style="font-size: 11px; color: #9ca3af; margin-bottom: 10px;">UPI ID: <b style="color: #facc15;">paytmqr5ufcdm@ptys</b></p>
+        <a id="payDirectBtn" href="#" style="display: block; background: #2563eb; color: #fff; padding: 10px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: bold; margin-bottom: 8px;">
+          सीधे UPI ऐप से पे करें
+        </a>
+        <a id="payWaBtn" href="#" target="_blank" style="display: block; background: #22c55e; color: #fff; padding: 10px; border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: bold;">
+          पेमेंट स्क्रीनशॉट भेजें
+        </a>
+  
